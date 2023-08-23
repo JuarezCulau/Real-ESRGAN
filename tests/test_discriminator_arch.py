@@ -13,7 +13,9 @@ def test_unetdiscriminatorsn():
     assert output.shape == (1, 1, 32, 32)
 
     # model init and forward (gpu)
+    print("439505390")
     if torch.cuda.is_available():
+        print("Cuda available")
         net.cuda()
         output = net(img.cuda())
         assert output.shape == (1, 1, 32, 32)

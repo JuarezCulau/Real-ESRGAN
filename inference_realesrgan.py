@@ -29,6 +29,9 @@ def main():
         default=0.5,
         help=('Denoise strength. 0 for weak denoise (keep noise), 1 for strong denoise ability. '
               'Only used for the realesr-general-x4v3 model'))
+
+
+
     parser.add_argument('-s', '--outscale', type=float, default=4, help='The final upsampling scale of the image')
     parser.add_argument(
         '--model_path', type=str, default=None, help='[Option] Model path. Usually, you do not need to specify it')
@@ -51,6 +54,16 @@ def main():
         help='Image extension. Options: auto | jpg | png, auto means using the same extension as inputs')
     parser.add_argument(
         '-g', '--gpu-id', type=int, default=None, help='gpu device to use (default=None) can be 0,1,2 for multi-gpu')
+
+    # Set default argument values directly in the script
+    args = parser.parse_args([
+        #'-i', 'C:/Users/juare/Documents/GitHub/Real-ESRGAN/inputs',
+        '-i', 'C:/Users/juare/Desktop/Work/FaceOP/Scrapped',
+        '-n', 'RealESRGAN_x4plus',
+        '-o', 'results',
+        '-dn', '0.5',
+        '-g', '0'  # Specify any other arguments and values you need
+    ])
 
     args = parser.parse_args()
 
@@ -102,6 +115,9 @@ def main():
         wdn_model_path = model_path.replace('realesr-general-x4v3', 'realesr-general-wdn-x4v3')
         model_path = [model_path, wdn_model_path]
         dni_weight = [args.denoise_strength, 1 - args.denoise_strength]
+
+    # Bypassing the identification of GPU
+    args.gpu_id = 0  # Set the GPU ID
 
     # restorer
     upsampler = RealESRGANer(
